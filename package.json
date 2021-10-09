@@ -20,6 +20,7 @@
   "homepage": "https://github.com/themegat/home-security#readme",
   "workspaces": [
     "home-security-pi",
-    "functions"
+    "functions",
+    "home-security-ng"
   ]
 }
