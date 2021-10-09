@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-func": "cd ./functions && npm run build",
-    "fr-emu": "npm run build-func && firebase emulators:start"
+    "build-hm-ng": "cd ./home-security-ng && ng build",
+    "fr-emu": "npm run build-func && npm run build-hm-ng && firebase emulators:start"
   },
   "repository": {
     "type": "git",
