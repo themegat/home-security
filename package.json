@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-func": "cd ./functions && npm run build",
+    "fr-emu": "npm run build-func && firebase emulators:start"
   },
   "repository": {
     "type": "git",
