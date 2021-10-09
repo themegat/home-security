@@ -1,0 +1,23 @@
+{
+  "name": "home-security",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themegat/home-security.git"
+  },
+  "author": "mega-t",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/themegat/home-security/issues"
+  },
+  "homepage": "https://github.com/themegat/home-security#readme",
+  "workspaces": [
+    "home-security-pi",
+    "functions"
+  ]
+}
