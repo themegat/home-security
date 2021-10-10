@@ -1,3 +1,5 @@
+import { MaterialModule } from './custom-modules/material/material.module';
+import { FirestoreService } from './services/firestore-service/firestore.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -8,15 +10,18 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MaterialModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
@@ -27,7 +32,9 @@ import { reducers, metaReducers } from './reducers';
       metaReducers
     })
   ],
-  providers: [],
+  providers: [
+    FirestoreService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

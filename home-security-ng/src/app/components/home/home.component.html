@@ -1,0 +1,27 @@
+<div class="container">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div>
+                        <mat-icon>sensors</mat-icon>
+                        <b>Sensors</b>
+                    </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    View sensor states
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="item">
+                <mat-icon class="no-detection-color" [ngClass]="{'detection-color' : (isPirAlarmActive | async)}">
+                    sensors
+                </mat-icon>
+                <div class="data">
+                    <h2>PIR Sensor</h2>
+                    <p *ngIf="!(isPirAlarmActive | async)">No motion detected</p>
+                    <p *ngIf="(isPirAlarmActive | async)">Motion detected</p>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
