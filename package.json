@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-func": "cd ./functions && npm run build",
     "build-hm-ng": "cd ./home-security-ng && npm run build-dev",
-    "fire-emu": "npm run build-func && npm run build-hm-ng && firebase emulators:start"
+    "fire-emu": "npm run build-func && npm run build-hm-ng && firebase emulators:start",
+    "fire-emu-store": "firebase emulators:start --only firestore"
   },
   "repository": {
     "type": "git",
