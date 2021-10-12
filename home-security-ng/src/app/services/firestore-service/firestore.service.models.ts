@@ -1,24 +1,24 @@
-import { DocumentReference } from 'firebase/firestore';
-import { DocumentData } from '@google-cloud/firestore';
-import { CollectionReference } from 'firebase/firestore';
-import { collection, doc, Firestore } from 'firebase/firestore';
+import { SensorDocument } from './../../documents/sensor.doc';
 
 export class FirestoreServiceModels {
-    private db: Firestore;
-
-    constructor(firestore: Firestore) {
-        this.db = firestore;
+  static sensorCollection: FirestoreServiceModel = {
+    collection: 'sesnors',
+    documents: {
+      sensorOne: {
+        document: 'sensor-1',
+        type: 'PIR',
+        isAlarmOn: false,
+        start: false,
+        displayName: 'Patio Sensor'
+      }
     }
-
-    get eventsCol(): CollectionReference<DocumentData> {
-        return collection(this.db, 'events');
-    }
-
-    get testDoc(): DocumentReference<DocumentData> {
-        return doc(this.eventsCol, 'test');
-    }
-
-    get controllerDoc(): DocumentReference<DocumentData> {
-        return doc(this.eventsCol, 'controller');
-    }
+  }
 }
+
+export interface FirestoreServiceModel {
+  collection: string;
+  documents: {
+    sensorOne: SensorDocument
+  };
+}
+

@@ -1,35 +1,49 @@
-import { Injectable, isDevMode } from '@angular/core';
-import { initializeApp } from "firebase/app";
-import { connectFirestoreEmulator, doc, Firestore, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
+import { Injectable } from '@angular/core';
+import { DocumentData } from '@google-cloud/firestore';
+import { Store } from '@ngrx/store';
+import { initializeApp } from 'firebase/app';
+import {
+  collection,
+  CollectionReference,
+  connectFirestoreEmulator,
+  doc,
+  DocumentReference,
+  Firestore,
+  getFirestore,
+  onSnapshot,
+  setDoc,
+  Unsubscribe,
+} from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
+import { SensorActions } from 'src/app/state/action-types';
+import { AppState } from 'src/app/state/app.state';
 import { FirebaseConfig } from 'src/config/firebase.config';
 import { environment } from 'src/environments/environment';
+
+import { SensorDocument } from './../../documents/sensor.doc';
 import { FirestoreServiceModels } from './firestore.service.models';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class FirestoreService {
   private db: Firestore | any = null;
-  private firestoreModels: FirestoreServiceModels | any;
+  private sensorListener: Unsubscribe | any = null;
 
   isAlarmActive = new BehaviorSubject(false);
+  pirSensor = new BehaviorSubject<SensorDocument | null>(null);
 
-  constructor() {
+  constructor(private store: Store<AppState>) {
     this.init();
   }
 
-  get models(): FirestoreServiceModels {
-    return this.firestoreModels;
-  }
-
   public initializeDB(): void {
-    setDoc(this.models.controllerDoc, {
-      isAlarmActive: false
-    });
+    setDoc(this.sensorOne, FirestoreServiceModels.sensorCollection.documents.sensorOne);
   }
 
   public startListeners(): void {
+    this.initializeDB();
     this.listenForAlarmChanges();
   }
 
@@ -40,16 +54,37 @@ export class FirestoreService {
       connectFirestoreEmulator(this.db, 'localhost', 8080);
       console.log('Firestore running in dev mode');
     }
-    this.firestoreModels = new FirestoreServiceModels(this.db);
   }
 
-
   private listenForAlarmChanges(): void {
-    onSnapshot(doc(this.models.eventsCol, this.models.controllerDoc.id), (doc) => {
-      const data = doc.data();
-      if (data && data['isAlarmActive'] !== undefined) {
-        this.isAlarmActive.next(data['isAlarmActive']);
+    if (this.sensorListener)
+      return;
+
+    this.sensorListener = onSnapshot(doc(this.sensorCollection, this.sensorOne.id), (doc) => {
+      const data = doc.data() as SensorDocument;
+      if (data) {
+        this.isAlarmActive.next(data.isAlarmOn ?? false);
+        this.pirSensor.next(data);
+        this.store.dispatch(SensorActions.setSensor(data));
       }
     })
   }
+
+  get sensorCollection(): CollectionReference<DocumentData> {
+    return collection(this.db, FirestoreServiceModels.sensorCollection.collection);
+  }
+
+  get sensorOne(): DocumentReference<DocumentData> {
+    return doc(this.sensorCollection, FirestoreServiceModels.sensorCollection.documents.sensorOne.document);
+  }
+}
+
+export interface AppCollectionReference {
+  firestore: Firestore;
+  collectionName: string;
+}
+
+export interface AppDocumentReference {
+  collection: CollectionReference<DocumentData>;
+  documentName: string;
 }
