@@ -1,7 +1,7 @@
-import { BehaviorSubject } from 'rxjs';
-import { FirestoreService } from './../../services/firestore-service/firestore.service';
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { SensorActions } from 'src/app/state/action-types';
+import { SensorSelectors } from 'src/app/state/selector-types';
 import { AppState } from '../../state/app.state';
 
 @Component({
@@ -10,17 +10,13 @@ import { AppState } from '../../state/app.state';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  constructor(public firestoreService: FirestoreService,
-    private store: Store<AppState>) { }
+  sensors$ = [
+    this.store.pipe(select(SensorSelectors.getSensor))
+  ]
+
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    console.log('Load');
-    // this.firestoreService.initializeDB();
-    // this.firestoreService.startListeners();
-    this.store.dispatch({ type: '[Sensors] Initialize Sensors' });
-  }
-
-  get isPirAlarmActive(): BehaviorSubject<boolean> {
-    return this.firestoreService.isAlarmActive;
+    this.store.dispatch(SensorActions.initSensors());
   }
 }

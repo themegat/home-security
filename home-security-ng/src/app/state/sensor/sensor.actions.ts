@@ -17,7 +17,7 @@ export const SensorsFailure = createAction(
   props<{ error: any }>()
 );
 
-// export const init = createAction(`${sensorTag} Initialize Sensors`);
+export const initSensors = createAction(`${sensorTag} Initialize Sensors`);
 
 export const setSensor = createAction(`${sensorTag} Set Sensor`,
   props<SensorDocument>());
