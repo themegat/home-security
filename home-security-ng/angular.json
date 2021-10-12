@@ -113,5 +113,8 @@
       }
     }
   },
-  "defaultProject": "home-security-ng"
+  "defaultProject": "home-security-ng",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
