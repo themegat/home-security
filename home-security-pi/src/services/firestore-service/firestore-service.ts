@@ -1,11 +1,9 @@
-import { FirebaseConfig } from './../config/firebase.config';
+import { FirebaseConfig } from '../../config/firebase.config';
 import { FirestoreModels } from './firestore-model';
 import { IFireStoreService } from './firestore-service-interface';
-import { injectable } from "inversify";
 import "reflect-metadata";
 import * as admin from 'firebase-admin';
 
-@injectable()
 export class FireStoreService implements IFireStoreService {
     private _db: any;
     private models: FirestoreModels;
