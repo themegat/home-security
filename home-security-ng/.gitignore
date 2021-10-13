@@ -44,4 +44,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
+## Project specific
 build/
+firebase.config.ts
